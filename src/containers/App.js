@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
@@ -24,23 +24,24 @@ class App extends Component {
   }
   
   render () {
-    const filteredKitties = this.state.kitty.filter(kitty => {
+    const { kitty, searchfield } = this.state;
+    const filteredKitties = kitty.filter(kitty => {
       return kitty.name
         .toLowerCase()
-        .includes(this.state.searchfield.toLowerCase());
-    });
-    if (this.state.kitty.length === 0) {
-      return <h1 className='tc'>Loading</h1>
-    } else {
-      return <div className="tc">
+        .includes(searchfield.toLowerCase());
+    }) 
+    return !kitty.length ? 
+      <h1 className='tc'>Loading</h1> :
+      (
+        <div className="tc">
           <h1 className="f1">Kitty Friends</h1>
           <SearchBox searchChange={this.onSearchChange} />
           <Scroll>
             <CardList kitty={filteredKitties} />
           </Scroll>
-        </div>;
+        </div>
+      );
     }
   }
-}
 
 export default App;
