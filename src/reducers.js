@@ -1,7 +1,7 @@
 import { CHANGE_SEARCH_FIELD} from './constants.js';
 
 const initialState = {
-  searchField : ''
+  searchField: ''
 }
 
 export const searchKitties = (state = initialState, action = {}) => {

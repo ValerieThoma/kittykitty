@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
+import  { connect } from 'react-redux';
+import { setSearchField } from "../actions";
 import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import Scroll from '../components/Scroll';
 import ErrorBoundry from '../components/ErrorBoundry';
 import './App.css';
 
+const mapStateToProps = (state) => {
+  return { searchField: state.searchKitties };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+  };
+};
+
+
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      kitty: [],
-      searchfield: ''
+      kitty: []
     }
   }
 
@@ -19,18 +31,13 @@ class App extends Component {
     .then(response => response.json())
     .then(users => this.setState({ kitty: users }));
   }
-
-  onSearchChange = (event) =>  {
-    this.setState( {searchfield : event.target.value  })
-  }
   
   render () {
-    const { kitty, searchfield } = this.state;
+    const { kitty, searchField } = this.state;
     const filteredKitties = kitty.filter(kitty => {
-      return kitty.name
-        .toLowerCase()
-        .includes(searchfield.toLowerCase());
-    }) 
+      return kitty.name.toLowerCase().includes(searchField.toLowerCase());
+    })
+    
     return !kitty.length ? <h1 className="tc">
         Loading
       </h1> : <div className="tc">
@@ -45,4 +52,5 @@ class App extends Component {
     }
   }
 
-export default App;
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
